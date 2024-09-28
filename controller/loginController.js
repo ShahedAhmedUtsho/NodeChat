@@ -1,8 +1,5 @@
 function getLogin(req, res, next) {
-    res.render('login', {
-        // title: "NodeChat - Login"
-
-    })
+    res.render('login')
 }
 
 module.exports = {

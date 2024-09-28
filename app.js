@@ -18,7 +18,7 @@ const {
 
 const loginRouter = require('./router/loginRouter');
 // const userRouter = require('./router/loginRouter');
-// const inboxRouter = require('./router/inboxRouter')
+const inboxRouter = require('./router/inboxRouter')
 
 
 
@@ -56,7 +56,7 @@ mongoose.connect(mongoURI)
 // routeing 
 app.get("/", loginRouter)
 // app.get("/users", userRouter)
-// app.get("/inbox", inboxRouter)
+app.get("/inbox", inboxRouter)
 
 
 app.use(notFoundMiddleWare);
