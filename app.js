@@ -17,7 +17,7 @@ const {
 
 
 const loginRouter = require('./router/loginRouter');
-// const userRouter = require('./router/loginRouter');
+const userRouter = require('./router/userRouter');
 const inboxRouter = require('./router/inboxRouter')
 
 
@@ -27,16 +27,20 @@ const inboxRouter = require('./router/inboxRouter')
 // create app 
 
 const app = express();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser(process.env.COOKIE_SECRET))
+
 // app.set('view engine', 'ejs')
+app.use('/users', userRouter);
+app.use('/inbox', inboxRouter)
 
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('view engine', "ejs")
 
 
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser(process.env.COOKIE_SECRET))
 
 
 // mongodb connect 
@@ -56,7 +60,7 @@ mongoose.connect(mongoURI)
 // routeing 
 app.get("/", loginRouter)
 // app.get("/users", userRouter)
-app.get("/inbox", inboxRouter)
+// app.get("/inbox", inboxRouter)
 
 
 app.use(notFoundMiddleWare);

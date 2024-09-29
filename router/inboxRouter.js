@@ -6,6 +6,6 @@ const express = require('express');
 const { getInbox } = require('../controller/inboxController');
 const router = express.Router();
 
-router.get('/inbox', decorateHtmlResponse(`Inbox`), getInbox);
+router.get('/', decorateHtmlResponse(`Inbox`), getInbox);
 
 module.exports = router
