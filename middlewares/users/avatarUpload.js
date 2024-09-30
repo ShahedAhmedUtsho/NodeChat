@@ -13,7 +13,21 @@ function avatarUpload(req, res, next) {
                 }
             })
         } else {
-            next()
+
+
+            if (req.files && req.files.length > 0) {
+                next()
+            } else {
+                res.status(500).json({
+                    errors: {
+                        common: {
+                            message: "avatar is required"
+                        }
+                    }
+                })
+            }
+
+
         }
 
     })
