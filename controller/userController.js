@@ -26,8 +26,8 @@ async function addUser(req, res, next) {
                 password: hashPassword,
             })
             await newUser.save()
-            console.log(req.body);
-            res.json("okay dear");
+
+            res.json("okay");
 
         } else {
             res.status(500).json(
