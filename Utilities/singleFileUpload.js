@@ -4,7 +4,7 @@ const createError = require('http-errors')
 function uploader(subfolder_path, allow_file_types, max_file_size, err_message) {
 
     const uploadFolder = `${__dirname}/../public/uploads/${subfolder_path}`
-    console.log('console this', uploadFolder)
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, uploadFolder)

@@ -12,6 +12,14 @@ const addUserValidators = [
         .withMessage('only alphabet are allowed')
         .trim()
     ,
+    check("mobile")
+        .isLength({ min: 1 })
+
+        .withMessage("number is required")
+        .isNumeric()
+        .withMessage('give a valid number')
+        .trim()
+    ,
     check('email').isEmail().withMessage('invalid email address')
         .trim()
         .custom(async (value) => {
