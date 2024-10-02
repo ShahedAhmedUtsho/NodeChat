@@ -8,6 +8,13 @@ function getUsers(req, res, next) {
 
 }
 
+async function all(req, res, next) {
+
+    const users = await People.find().select('-password -__v')
+
+    res.json(users)
+
+}
 
 async function addUser(req, res, next) {
     let newUser;
@@ -69,5 +76,6 @@ async function addUser(req, res, next) {
 
 module.exports = {
     getUsers,
-    addUser
+    addUser,
+    all
 }; 

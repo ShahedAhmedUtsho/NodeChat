@@ -43,17 +43,13 @@
                             <th class="py-4">Manage</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-gray-800/40">
-                        <tr class="text-center hover:bg-gray-800/50 transition">
-                            <td class="flex items-center justify-center p-4">
-                                <img src="./images/user1.png" class="w-10 h-10 rounded-full mr-2" />
-                                <span>User 1</span>
-                            </td>
-                            <td class="p-4">email@email.com</td>
-                            <td class="p-4">
-                                <img src="./images/trash.png" alt="Delete" class="w-6 h-6 cursor-pointer" />
-                            </td>
-                        </tr>
+                    <tbody id="user-body" class="bg-gray-800/40">
+
+
+
+
+
+
                         <!-- Repeat rows for other users -->
                     </tbody>
                 </table>
@@ -136,13 +132,25 @@
 
                     } else {
 
-                        closeModal()
+                        closeModal();
+                        Toastify({
+                            text: "User successfully created!",
+                            duration: 1000,
+                            close: true,
+                            gravity: "top",
+                            position: "center",
+                            backgroundColor: "#4B20B2",
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1000)
+
 
                     }
 
 
 
-                    console.log("this is response")
+
                 }
                 form.addEventListener('submit', onSubmit)
 
@@ -160,5 +168,58 @@
                 function openModal() {
                     modal.classList.remove('hidden');
                 }
+            </script>
+
+            <script>
+
+
+                const getUsers = async () => {
+                    const userBody = document.getElementById('user-body')
+
+                    try {
+                        const res = await fetch('/users/all')
+                        const data = await res.json();
+                        console.log(data);
+
+                        if (data && data.length > 0) {
+                            data.forEach(user => {
+
+                                const row = document.createElement('tr');
+                                row.classList.add('text-center', 'hover:bg-gray-800/50', 'transition')
+
+                                row.id = user.id;
+                                const avatarPath = `uploads/avatar/${user.avatar}`
+                                row.innerHTML = `
+                      
+                            <td class="flex items-center justify-center p-4">
+                               <div class"flex justify-start items-center w-full ">
+                                 <img src="${avatarPath}" class="w-10 h-10 rounded-full  mr-2 object-cover " />
+                                
+                                </div>
+                                <span>${user.name}</span>
+                            </td>
+                            <td class="p-4">${user.email}</td>
+                            <td class="p-4">
+                                <div class="w-full flex justify-end h-6 cursor-pointer  "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></div>
+                                
+                            </td>`
+                                userBody.appendChild(row)
+                            })
+                        }
+
+
+
+
+
+                    } catch (error) {
+                        console.log(error)
+
+                    }
+
+                }
+
+                getUsers()
+
+
             </script>
     </body>

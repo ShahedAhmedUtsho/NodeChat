@@ -57,7 +57,7 @@ const addUserValidatorHandler = (req, res, next) => {
                     if (err) {
                         console.log(err)
                     }
-                    console.log("remove okay")
+
                 }
             )
 
