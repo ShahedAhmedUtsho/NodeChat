@@ -282,10 +282,10 @@
                                     backgroundColor: "#4B20B2",
                                 }).showToast();
 
-
-                                setTimeout(() => {
-                                    location.reload()
-                                }, 1000)
+                                document.getElementById(id).remove()
+                                // setTimeout(() => {
+                                //     location.reload()
+                                // }, 1000)
 
                             } else {
                                 const result = await response.json();
