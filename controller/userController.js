@@ -1,8 +1,8 @@
 
 const bcrypt = require('bcrypt');
 const People = require('../Models/peopleSchema');
-
-
+const { unlink } = require('fs')
+const path = require('path')
 function getUsers(req, res, next) {
     res.render('users')
 
@@ -15,6 +15,46 @@ async function all(req, res, next) {
     res.json(users)
 
 }
+
+
+
+async function deleteUser(req, res, next) {
+    const { id } = req.body;
+
+    try {
+        const user = await People.findByIdAndDelete(id);
+        if (user) {
+
+            unlink(
+                path.join(`${__dirname}/../public/uploads/avatar/${user.avatar}`),
+
+                (err) => {
+                    console.log()
+                    if (err) {
+                        console.log(err)
+                    }
+
+                }
+            )
+            res.json({ message: "user deleted Successfully" })
+        } else {
+            res.status(404).json({
+                message: "user not found"
+            })
+        }
+
+
+    } catch (error) {
+        res.status(500).send({
+            message: "internal server error"
+
+        })
+
+    }
+
+
+}
+
 
 async function addUser(req, res, next) {
     let newUser;
@@ -77,5 +117,6 @@ async function addUser(req, res, next) {
 module.exports = {
     getUsers,
     addUser,
-    all
+    all,
+    deleteUser
 }; 

@@ -6,7 +6,8 @@ const decorateHtmlResponse = require('../middlewares/decorateHtmlResponse');
 const {
     getUsers,
     addUser,
-    all
+    all,
+    deleteUser
 } = require('../controller/userController');
 const avatarUpload = require('../middlewares/users/avatarUpload');
 const {
@@ -14,8 +15,9 @@ const {
     addUserValidatorHandler
 } = require('../middlewares/users/userValidator');
 
-router.get('/', decorateHtmlResponse("Users"), getUsers)
+router.get('/', decorateHtmlResponse("Users"), getUsers);
 // add user 
-router.get('/all', all)
-router.post("/", avatarUpload, addUserValidators, addUserValidatorHandler, addUser)
+router.get('/all', all);
+router.post("/", avatarUpload, addUserValidators, addUserValidatorHandler, addUser);
+router.delete("/",deleteUser)
 module.exports = router; 
