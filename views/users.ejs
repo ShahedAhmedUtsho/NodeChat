@@ -289,14 +289,12 @@
 
                             } else {
                                 const result = await response.json();
-                                console.log("user delete failed ", result.message)
-
-
+                                console.log("user delete failed ", result.message);
                             }
                         } catch (error) {
-                            console.log("error deleting user", error)
+                            console.log("error deleting user", error);
                         } finally {
-                            deleteModelClose()
+                            deleteModelClose();
                         }
 
                     })
