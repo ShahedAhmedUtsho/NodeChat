@@ -16,7 +16,7 @@ router.post('/',
     login)
 
 router.post('/logout', checkLogin, (req, res) => {
-    console.log("logout")
+   
     res.clearCookie(process.env.LOGIN_TOKEN).json({
         message: "logout successfully"
     })

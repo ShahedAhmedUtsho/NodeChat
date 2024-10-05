@@ -37,7 +37,7 @@ async function login(req, res, next) {
                         signed: true
                     })
                 res.locals.LoggedInUser = userObject;
-                console.log("get user")
+                
                 res.json(userObject)
 
             } else {

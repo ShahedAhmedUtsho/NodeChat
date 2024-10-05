@@ -202,7 +202,7 @@
                             const deleteModelOpen = (event) => {
 
                                 deleteUserID = event.currentTarget.id;
-                                console.log(deleteUserID)
+                              
                                 user_delete_model.classList.remove('hidden')
 
 
@@ -210,7 +210,7 @@
                             if (deleteButton && deleteButton?.length > 0) {
 
                                 deleteButton.forEach((button) => {
-                                    console.log(button, "this is delete button");
+                                    
                                     button.addEventListener('click', deleteModelOpen)
 
 

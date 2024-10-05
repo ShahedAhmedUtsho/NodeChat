@@ -125,7 +125,7 @@
                     password: e.target.password.value
 
                 }
-                console.log("working", body);
+             
 
                 try {
                     const res = await fetch('/', {
@@ -137,7 +137,7 @@
 
                     });
                     if (res.ok) {
-                        console.log("Login successful")
+                        
                         Toastify({
                             text: "Login successful",
                             duration: 1000,
