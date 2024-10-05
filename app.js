@@ -35,7 +35,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 // app.set('view engine', 'ejs')
 app.use('/users', userRouter);
 app.use('/inbox', inboxRouter)
-
+app.use('/', loginRouter)
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('view engine', "ejs")
@@ -58,7 +58,7 @@ mongoose.connect(mongoURI)
 
 
 // routeing 
-app.get("/", loginRouter)
+// app.get("/", loginRouter)
 // app.get("/users", userRouter)
 // app.get("/inbox", inboxRouter)
 
