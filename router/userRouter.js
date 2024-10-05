@@ -14,10 +14,11 @@ const {
     addUserValidators,
     addUserValidatorHandler
 } = require('../middlewares/users/userValidator');
+const checkLogin = require('../middlewares/common/checkLogin');
 
-router.get('/', decorateHtmlResponse("Users"), getUsers);
+router.get('/', checkLogin, decorateHtmlResponse("Users"), getUsers);
 // add user 
 router.get('/all', all);
-router.post("/", avatarUpload, addUserValidators, addUserValidatorHandler, addUser);
-router.delete("/",deleteUser)
+router.post("/", checkLogin, avatarUpload, addUserValidators, addUserValidatorHandler, addUser);
+router.delete("/", checkLogin, deleteUser)
 module.exports = router; 
