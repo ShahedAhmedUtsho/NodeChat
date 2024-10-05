@@ -147,7 +147,8 @@
                             backgroundColor: "#4B20B2",
                         }).showToast();
 
-                        e.target.reset()
+                        e.target.reset();
+                        window.location.href = '/inbox'
 
                     } else {
                         const errorData = await res.json();
