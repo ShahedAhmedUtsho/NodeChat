@@ -23,7 +23,8 @@ async function login(req, res, next) {
                     name: user.name,
                     mobile: user.mobile,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    avatar: user.avatar,
                 }
                 const token = jwt.sign(userObject, process.env.JWT_SECRET,
                     { expiresIn: '1d' }
@@ -69,7 +70,7 @@ async function login(req, res, next) {
             }
         })
         res.status(error.status || 500).json({
-           
+
             errors: {
                 common: {
                     msg: error.message

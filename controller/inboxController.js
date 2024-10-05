@@ -1,5 +1,6 @@
 function getInbox(req, res, next) {
-    res.render('inbox')
+    console.log(req.user)
+    res.render('inbox', { title: 'Inbox', ...req.user })
 
 }
 
