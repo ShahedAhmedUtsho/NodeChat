@@ -7,6 +7,6 @@ const { getInbox } = require('../controller/inboxController');
 const checkLogin = require('../middlewares/common/checkLogin');
 const router = express.Router();
 
-router.get('/', checkLogin, decorateHtmlResponse(`Inbox`), getInbox);
+router.get('/', decorateHtmlResponse(`Inbox`), checkLogin, getInbox);
 
 module.exports = router
