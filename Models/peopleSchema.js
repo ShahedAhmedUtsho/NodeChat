@@ -31,6 +31,10 @@ const peopleSchema = mongoose.Schema({
         enum: ["admin", "user"],
         default: "user"
     },
+    conversations: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat'
+    }]
 
 
 

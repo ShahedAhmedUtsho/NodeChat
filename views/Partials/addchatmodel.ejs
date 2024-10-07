@@ -1,0 +1,150 @@
+<div class="modal-wrapper hidden  fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+    id="add-chat-modal">
+    <div class="modal bg-[#121212] rounded-lg shadow-lg p-8 w-full max-w-lg relative">
+        <a id="close-add-chat-modal"
+            class="modal-close text-gray-400 hover:text-white text-3xl absolute top-4 right-6 transition duration-200">x</a>
+        <div class="modal-title mb-6 text-center">
+            <h2 class="text-3xl font-semibold text-gray-100 text-start"> start conversation</h2>
+        </div>
+        <div class="modal-body">
+            <form action="/chats" method="post" id="add-chat-form" class="space-y-6">
+                <div>
+                    <input type="text" placeholder="Search by username" name="search_user_1" id="search_user_1"
+                        class="w-full p-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-[#4B20B2] focus:outline-none transition duration-200" />
+                    <p id="username-error" class="error username-error hidden text-sm text-red-500 mt-1">Please enter a
+                        valid username.</p>
+                </div>
+
+
+                <div>
+
+                    <div id="user_search_results_box" class="space-y-4  max-h-80  overflow-y-scroll">
+                        <!-- user search results will be shown here  -->
+
+                    </div>
+                </div>
+
+                <p id="common-error" class="error common-error hidden text-sm text-red-500 mt-4">Please correct the
+                    errors above before submitting.</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    const user_search_results_box = document.getElementById('user_search_results_box');
+
+    const user_Search_input = document.getElementById('search_user_1');
+
+
+
+    let userFindTimeOut;
+
+    user_Search_input.addEventListener('input', () => {
+        clearTimeout(userFindTimeOut);
+        user_search_results_box.innerHTML = '';
+
+
+
+        const user_Search_input_value = user_Search_input.value;
+        if (user_Search_input_value.length >= 3) {
+
+            userFindTimeOut = setTimeout(async () => {
+
+
+
+                const response = await fetch('/inbox/find_match_users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        search_user_text: user_Search_input_value,
+
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    if (result?.users?.length > 0) {
+                        const users = result.users;
+
+                        users?.forEach(user => {
+                            let userDev = document.createElement('div');
+                            userDev.id = user._id;
+                            userDev.classList = 'flex items-center space-x-4 p-3 bg-gray-800 rounded-lg';
+
+                            userDev.innerHTML = `
+
+                             <img src=${'/uploads/avatar/' + user.avatar} alt="User Avatar" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="text-gray-200 font-semibold">${user.name}</p>
+                                <p class="text-gray-400 text-sm">${user.email}</p>
+                            </div>
+                            
+                            ` ;
+                            user_search_results_box.appendChild(userDev);
+                        });
+
+
+
+
+
+                    } else {
+                        console.log('No user found');
+                    }
+                }
+
+
+
+
+
+
+
+
+            }, 500);
+        }
+
+
+    })
+
+
+</script>
+
+<!-- <script>
+    document.getElementById('add-chat-form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        document.getElementById('common-error').classList.add('hidden');
+        const searchUser1 = document.getElementById('search_user_1').value;
+
+
+        const response = await fetch('/inbox/create_chats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                search_user_1: searchUser1,
+
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // Handle success (e.g., close modal, show success message, etc.)
+            document.getElementById('add-chat-modal').classList.add('hidden');
+            console.log('Chat created successfully!');
+            event.target.reset();
+        } else {
+            // Handle errors (e.g., display error messages)
+            document.getElementById('common-error').classList.remove('hidden');
+            document.getElementById('common-error').textContent = result.message || 'An error occurred. Please try again.';
+        }
+    });
+
+</script> -->

@@ -25,6 +25,7 @@ async function login(req, res, next) {
                     email: user.email,
                     role: user.role,
                     avatar: user.avatar,
+                    _id: user._id
                 }
                 const token = jwt.sign(userObject, process.env.JWT_SECRET,
                     { expiresIn: '1d' }
@@ -37,7 +38,7 @@ async function login(req, res, next) {
                         signed: true
                     })
                 res.locals.LoggedInUser = userObject;
-                
+
                 res.json(userObject)
 
             } else {
