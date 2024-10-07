@@ -19,6 +19,19 @@ const addUserValidators = [
         .isNumeric()
         .withMessage('give a valid number')
         .trim()
+        .custom(async (value) => {
+            try {
+                const user = await People.findOne({ mobile: value })
+                if (user) {
+                    throw createError(400, "mobile already Exist")
+
+                }
+            } catch (error) {
+                throw createError(error.message)
+
+            }
+
+        })
     ,
     check('email').isEmail().withMessage('invalid email address')
         .trim()

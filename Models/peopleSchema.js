@@ -15,6 +15,8 @@ const peopleSchema = mongoose.Schema({
     mobile: {
         type: String,
         require: true,
+        trim: true,
+        lowercase: true,
 
     },
     password: {
@@ -44,6 +46,10 @@ const peopleSchema = mongoose.Schema({
 
 
 );
+
+peopleSchema.query.withoutMe = function (id) {
+    return this.where({ _id: { $ne: id } });
+};
 
 const People = new mongoose.model('People', peopleSchema);
 

@@ -35,6 +35,7 @@
 
 
 <script>
+    let searched_user
     const user_search_results_box = document.getElementById('user_search_results_box');
 
     const user_Search_input = document.getElementById('search_user_1');
@@ -46,6 +47,7 @@
     user_Search_input.addEventListener('input', () => {
         clearTimeout(userFindTimeOut);
         user_search_results_box.innerHTML = '';
+        document.getElementById('common-error').classList.add('hidden');
 
 
 
@@ -76,7 +78,8 @@
                         users?.forEach(user => {
                             let userDev = document.createElement('div');
                             userDev.id = user._id;
-                            userDev.classList = 'flex items-center space-x-4 p-3 bg-gray-800 rounded-lg';
+
+                            userDev.classList = 'flex items-center space-x-4 p-3 bg-gray-800 searched_user rounded-lg';
 
                             userDev.innerHTML = `
 
@@ -90,6 +93,15 @@
                             user_search_results_box.appendChild(userDev);
                         });
 
+
+                        document.querySelectorAll('.searched_user').forEach(user => {
+                            user.addEventListener('click', (event) => {
+                                const clicked_user = event.currentTarget.id;
+
+                                StartConversation(clicked_user)
+
+                            })
+                        });
 
 
 
@@ -115,11 +127,16 @@
 
 </script>
 
-<!-- <script>
-    document.getElementById('add-chat-form').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        document.getElementById('common-error').classList.add('hidden');
-        const searchUser1 = document.getElementById('search_user_1').value;
+<script>
+
+
+
+    async function StartConversation(id) {
+
+        console.log(id);
+
+
+
 
 
         const response = await fetch('/inbox/create_chats', {
@@ -128,7 +145,7 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                search_user_1: searchUser1,
+                search_user_1: id,
 
             })
         });
@@ -139,12 +156,28 @@
             // Handle success (e.g., close modal, show success message, etc.)
             document.getElementById('add-chat-modal').classList.add('hidden');
             console.log('Chat created successfully!');
-            event.target.reset();
+
         } else {
             // Handle errors (e.g., display error messages)
             document.getElementById('common-error').classList.remove('hidden');
             document.getElementById('common-error').textContent = result.message || 'An error occurred. Please try again.';
         }
-    });
+    };
 
-</script> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

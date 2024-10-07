@@ -5,13 +5,12 @@ function checkLogin(req, res, next) {
     const token = req.signedCookies[process.env.LOGIN_TOKEN];
     if (!token) {
         if (!req.locals?.html) {
-            console.log("in html")
+           
             return res.redirect('/');
 
         }
         else {
 
-            console.log("in json")
             return res.status(401).json({ error: 'Unauthorized' });
         }
     }

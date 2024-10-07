@@ -9,12 +9,18 @@ function getInbox(req, res, next) {
     res.render('inbox', { title: 'Inbox', ...req.user })
 
 }
+
+
+
+
+
 async function create_chats(req, res, next) {
 
 
-    console.log(req.user, "user");
+
     try {
         const { search_user_1 } = req.body;
+
 
         const search_user_2 = req.user.email
         // Validate input
@@ -22,12 +28,10 @@ async function create_chats(req, res, next) {
             return res.status(400).json({ message: 'Please provide a username or mobile number to search.' });
         }
 
+
         // Find users based on input
         const user1 = search_user_1 ? await People.findOne({
-            $or: [
-                { email: search_user_1 },
-                { mobile: search_user_1 }
-            ]
+            _id: search_user_1
         }) : null;
         const user2 = search_user_2 ? await People.findOne({
             $or: [
@@ -35,7 +39,7 @@ async function create_chats(req, res, next) {
                 { mobile: search_user_2 }
             ]
         }) : null;
-
+       
         if (!user1 && !user2) {
             return res.status(404).json({ message: 'No users found with the provided information.' });
         }
@@ -86,7 +90,7 @@ async function find_match_users(req, res, next) {
                     { mobile: { $regex: search_user_text, $options: 'i' } }
 
                 ]
-        }).select('name email mobile avatar role _id');
+        }).select('name email mobile avatar role _id').withoutMe(req.user._id);
 
         if (users && users?.length > 0) {
             return res.json({ users })
