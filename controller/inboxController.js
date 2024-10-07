@@ -15,7 +15,7 @@ async function create_chats(req, res, next) {
     console.log(req.user, "user");
     try {
         const { search_user_1 } = req.body;
-        console.log(search_user_1,);
+
         const search_user_2 = req.user.email
         // Validate input
         if (!search_user_1 && !search_user_2) {
