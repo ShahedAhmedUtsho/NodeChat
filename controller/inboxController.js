@@ -39,7 +39,7 @@ async function create_chats(req, res, next) {
                 { mobile: search_user_2 }
             ]
         }) : null;
-       
+
         if (!user1 && !user2) {
             return res.status(404).json({ message: 'No users found with the provided information.' });
         }
@@ -109,5 +109,38 @@ async function find_match_users(req, res, next) {
 
 
 
+async function get_Conversation_list(req, res, next) {
+    try {
+        const user = req.user;
+        const conversations = await Chat.find({
+            participants: { $in: [user._id] }
+        }).populate('participants', 'name email mobile avatar');
 
-module.exports = { getInbox, create_chats, find_match_users }
+        const newCon = conversations.map(conversation => {
+            const receiver = conversation.participants.find(participant => !participant._id.equals(user._id));
+            const sender = conversation.participants.find(participant => participant._id.equals(user._id));
+
+
+            conversation = conversation.toObject();
+            conversation.receiver = receiver;
+            conversation.sender = sender;
+            conversation.participants = undefined;
+            return conversation
+
+
+        });
+
+
+
+        res.send(newCon);
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+
+
+
+
+module.exports = { getInbox, create_chats, find_match_users, get_Conversation_list }
