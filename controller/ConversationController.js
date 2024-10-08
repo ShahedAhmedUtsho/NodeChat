@@ -1,0 +1,33 @@
+const Chat = require("../Models/chat");
+
+async function get_conversation_by_id(req, res, next) {
+    const id = req.body.id;
+
+    try {
+        const user = req.user;
+        let conversation = await Chat.findOne({
+            _id: id,
+            participants: { $in: [user._id] }
+        }).populate('participants', 'name email mobile avatar');
+
+        if (conversation) {
+            const receiver = conversation.participants.find(participant => !participant._id.equals(user._id));
+            const sender = conversation.participants.find(participant => participant._id.equals(user._id));
+
+            conversation = conversation.toObject();
+            conversation.receiver = receiver;
+            conversation.sender = sender;
+            conversation.participants = undefined;
+            return res.json(conversation)
+        } else {
+            return res.json({ message: "No conversation found" })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while finding the conversation.' });
+
+    }
+
+}
+
+module.exports = { get_conversation_by_id }
