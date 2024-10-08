@@ -215,7 +215,53 @@
 
 
     const renderCheck = async (chat) => {
-        console.log(chat._id);
+
+        // Show loader while fetching conversation
+        inbox_right_box.innerHTML = `
+    <div class="flex-1 flex flex-col">
+        <!-- Chat Header Skeleton -->
+        <div class="p-4 bg-gray-700/20 flex justify-between items-center">
+            <div class="h-6 bg-gray-400 rounded w-1/4 animate-pulse"></div>
+            <div class="h-8 w-8 bg-gray-400 rounded-full animate-pulse"></div>
+        </div>
+
+        <!-- Chat Messages Skeleton -->
+        <div class="flex-1 p-4 space-y-4 overflow-y-auto  ">
+            <!-- Incoming Message Skeleton -->
+            <div class="flex items-start space-x-4">
+                <div class="w-10 h-10 bg-gray-400 rounded-full animate-pulse"></div>
+                <div class="bg-gray-600   max-w-96 p-4 rounded-lg text-gray-200 flex-1 space-y-2 animate-pulse">
+                    <div class="h-4 bg-gray-500 rounded animate-pulse"></div>
+                    <div class="h-3 w-1/4 bg-gray-500 rounded mt-2 animate-pulse"></div>
+                </div>
+            </div>
+
+            <!-- Outgoing Message Skeleton -->
+            <div class="flex justify-end items-end space-x-4">
+                <div class="bg-gray-600 p-4 rounded-lg text-gray-200 max-w-72 flex-1 space-y-2 animate-pulse">
+                    <div class="h-4 bg-gray-500 rounded animate-pulse"></div>
+                    <div class="h-3 w-1/4 bg-gray-500 rounded mt-2 animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Form Skeleton -->
+        <div class="p-4 flex gap-2 items-center">
+            <div class="w-6 h-6 bg-gray-400 rounded-full animate-pulse"></div>
+            <div class="flex-1 h-10 bg-gray-400 rounded-lg animate-pulse"></div>
+            <div class="w-6 h-6 bg-gray-400 rounded-full animate-pulse"></div>
+        </div>
+    </div>
+`;
+
+
+
+
+
+
+
+
+
 
         try {
             const res = await fetch('/inbox/get_conversation_by_id', {
@@ -231,20 +277,6 @@
             console.log(res)
             if (res) {
                 const newChat = await res.json();
-                console.log(newChat);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
