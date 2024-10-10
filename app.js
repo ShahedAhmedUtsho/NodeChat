@@ -8,6 +8,13 @@ const path = require('path')
 const port = process.env.PORT || 3000
 const cookieParser = require('cookie-parser')
 
+const http = require('http');
+const app = express();
+const socketIo = require('socket.io');
+const server = http.createServer(app);
+
+
+
 
 // internal import 
 
@@ -18,15 +25,26 @@ const {
 
 const loginRouter = require('./router/loginRouter');
 const userRouter = require('./router/userRouter');
-const inboxRouter = require('./router/inboxRouter')
+const inboxRouter = require('./router/inboxRouter');
 
+const SocketController = require('./Connection/SocketController');
 
+// socket io part 
 
+const io = new socketIo.Server(server);
+
+io.on('connection', (socket) => {
+
+  
+
+    SocketController(socket, io);
+
+})
 
 
 // create app 
 
-const app = express();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -67,6 +85,6 @@ app.use(notFoundMiddleWare);
 app.use(errorHandler)
 // error handle 
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`server is running`)
 })
