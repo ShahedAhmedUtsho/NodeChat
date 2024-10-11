@@ -5,7 +5,7 @@ const decorateHtmlResponse = require('../middlewares/decorateHtmlResponse');
 const express = require('express');
 const { getInbox, create_chats, find_match_users, get_Conversation_list } = require('../controller/inboxController');
 const checkLogin = require('../middlewares/common/checkLogin');
-const { get_conversation_by_id, get_messages_by_conversation_id } = require('../controller/ConversationController');
+const { get_conversation_by_id, get_messages_by_conversation_id, sendMessage } = require('../controller/ConversationController');
 const router = express.Router();
 
 router.get('/', decorateHtmlResponse(`Inbox`), checkLogin, getInbox);
@@ -16,4 +16,5 @@ router.get('/get_Conversation_list', checkLogin, get_Conversation_list);
 
 router.post('/get_conversation_by_id', checkLogin, get_conversation_by_id);
 router.post('/messages', checkLogin, get_messages_by_conversation_id);
+router.post('/send_messages', checkLogin, sendMessage);
 module.exports = router;

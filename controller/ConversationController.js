@@ -50,10 +50,17 @@ async function get_messages_by_conversation_id(req, res, next) {
 
 }
 
+async function sendMessage(req, res, next) {
+
+    const newChat = req.body.newChat;
+    const { message } = newChat;
+
+}
 
 
 
 
 
 
-module.exports = { get_conversation_by_id, get_messages_by_conversation_id }
+
+module.exports = { get_conversation_by_id, get_messages_by_conversation_id, sendMessage }

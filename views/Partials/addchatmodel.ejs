@@ -330,15 +330,25 @@
                     </svg>
                 </div>
 
-${messages.length > 0 ? messages.map(message => {
-                        return (`<div class="bg-gray-600 p-4 text-sm rounded-lg text-gray-200">
-                    <p class="leading-5">${message.message}</p>
-                    <small class="block text-gray-400 leading-none mt-2">${message.createdAt}</small> </div>`)
-                    }).join('') : ` <div class="bg-gray-600 p-4 text-sm rounded-lg text-gray-200">
-                    <p class="leading-5">Ok then</p>
-                    <small class="block text-gray-400 leading-none mt-2">Apr 16</small>
+${!messages.length > 0 ? messages.map(message => {
+                        return (`
+                        <div class="bg-gray-600 p-4 text-sm rounded-lg text-gray-200">
+                            <p class="leading-5">${message.message}</p>
+                            <small class="block text-gray-400 leading-none mt-2">${message.createdAt}</small> 
+                    </div>`)
+                    }).join('') : `
+                    
+                    <div class="bg-gray-600 p-4 text-sm rounded-lg text-gray-200">
+                            <p class="leading-5">Ok then</p>
+                            <small class="block text-gray-400 leading-none mt-2">Apr 16</small>
+                    </div>
+
+
+
+
                 </div>
-            </div>
+
+
             <div class="flex justify-end items-end space-x-4">
                 <div class="bg-indigo-600 p-4 text-sm rounded-lg text-gray-200 max-w-72">
                     <p class="leading-5">Ok then Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -348,9 +358,21 @@ ${messages.length > 0 ? messages.map(message => {
                     <small class="block text-gray-400 leading-none mt-2">Apr 16</small>
                 </div>
             </div>
+
+
+
+
         </div>
 
-        <!-- Chat Form -->
+     `
+
+                        }
+</div>
+
+</div>
+
+
+                           <!-- Chat Form -->
         <div class="p-4 flex gap-2 items-center">
             <div class="flex justify-center items-center w-6 h-6 mr-4 cursor-pointer">
             <img src="${"/uploads/avatar/" + newChat.sender.avatar}" alt="User Avatar" class="w-6 h-6 object-cover rounded-full">
@@ -370,15 +392,15 @@ ${messages.length > 0 ? messages.map(message => {
             </button>
             
         </div>
-    </div>`}
+    </div>
 
-               `
+      `
                 }
                 catch (error) {
                     console.log(error.message)
                 }
 
-
+                StartConversation(newChat._id)
 
                 const message_inbox_form_input = document.getElementById('message_inbox_form_input');
                 // const message_inbox_form_input_value = message_inbox_form_input.value;
@@ -386,6 +408,10 @@ ${messages.length > 0 ? messages.map(message => {
 
                 message_inbox_form_submit.addEventListener('click', () => {
                     newChat.message = message_inbox_form_input.value
+
+
+
+
                     messageSendFn(newChat)
                 });
 
@@ -412,17 +438,32 @@ ${messages.length > 0 ? messages.map(message => {
 
 </script>
 <script>
-    var socket = io("/sell");
+    var socket = io();
 
-    socket.on('myEvent', (msg) => {
-        console.log(msg)
+    async function StartConversation(id) {
+        console.log(id, "click convertaion for join room"); // Debug: Log the clicked user id 
+        socket.emit('join-room', id);
+    }
 
-    })
+
+
+
+
 
     function messageSendFn(newChat) {
 
 
 
+        const newMessage = {
+            message: newChat.message,
+            chatId: newChat._id,
+            senderId: newChat.sender._id,
+            receiverId: newChat.receiver._id,
+
+        }
+        console.log(newMessage)
+
+        socket.emit('send-message', newMessage);
         message_inbox_form_input.value = '';
 
     }
