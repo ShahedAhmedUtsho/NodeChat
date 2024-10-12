@@ -31,7 +31,19 @@
         </div>
     </div>
 </div>
+<script>
+    function scrollToBottom(chatBox) {
+        console.log("scroll to bottom")
 
+        console.log(chatBox?.scrollHeight, chatBox, "chatbox and its hight ")
+        if (chatBox) {
+            console.log('have')
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } else {
+            console.log('not have')
+        }
+    }
+</script>
 <script>
     let searched_user;
     const user_search_results_box = document.getElementById('user_search_results_box');
@@ -398,14 +410,22 @@ ${messages.length > 0 ? `
     </div>
 
       ` ;
+                    const chatBox = document.getElementById('chat_Ground');
+                    scrollToBottom(chatBox)
+                    if (chatBox) {
+                        setTimeout(() => {
+                            scrollToBottom(chatBox)
+                        }, 10)
+                    }
+                    else {
+                        console.log('No chat box found');
+                    }
+
 
 
                 }
                 catch (error) {
                     console.log(error.message)
-                } finally {
-                    scrollToBottom(document.getElementById('chat_Ground'))
-
                 }
 
                 const chat_Ground = document.getElementById('chat_Ground');
@@ -448,17 +468,7 @@ ${messages.length > 0 ? `
 <script>
 
 
-    function scrollToBottom(box) {
-        console.log("scroll to bottom")
-        const chatBox = box;
-        console.log(chatBox?.scrollHeight, chatBox, "chatbox and its hight ")
-        if (chatBox) {
-            console.log('have')
-            chatBox.scrollTop = chatBox.scrollHeight;
-        } else {
-            console.log('not have')
-        }
-    }
+
     var socket = io();
 
     async function StartConversation(id) {
@@ -485,7 +495,7 @@ ${messages.length > 0 ? `
         `;
 
         chat_Ground.appendChild(newMessage);
-        scrollToBottom()
+        scrollToBottom(document.getElementById('chat_Ground'))
 
 
 
