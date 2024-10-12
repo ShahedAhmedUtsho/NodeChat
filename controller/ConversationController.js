@@ -35,9 +35,8 @@ async function get_messages_by_conversation_id(req, res, next) {
     try {
         const id = req?.body?.id;
         console.log(("okey" + id))
-        const messages = await Message.find({ ChatId: id }).newFirst();
+        const messages = await Message.find({ ChatId: id }).populate('sender', 'name email mobile avatar');
 
-        console.log("messages okey", messages)
         return res.json(messages)
 
     } catch (error) {

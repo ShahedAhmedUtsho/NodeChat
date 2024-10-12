@@ -25,6 +25,10 @@ const messageSchema = new Schema({
         type: Boolean,
         default: false
     },
+    avatar: {
+        type: String,
+        required: true
+    },
     attachments: [{
         fileUrl: String, // URL of the attachment
         fileType: String // Type of file (image, video, etc.)

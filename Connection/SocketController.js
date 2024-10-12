@@ -18,19 +18,31 @@ const SocketController = (socket, io) => {
 
     // Listen for incoming messages
     socket.on('send-message', async (messageData) => {
-        const { message, chatId, senderId, receiverId } = messageData;
-
+        const { message, chatId, senderId, receiverId, avatar } = messageData;
+        console.log("avatar", avatar)
         // Save message to DB
         const newMessage = new Message({
             ChatId: chatId,
             sender: senderId,
             receiver: receiverId,
             message: message,
+            avatar: avatar,
+            
+
         });
-        await newMessage.save();
-        console.log("newMessage", "to room", messageData.chatId)
+
+
         // Emit the message to the specific room
         io.to(chatId).emit('receive-message', newMessage);
+
+
+        try {
+            await newMessage.save();
+
+        } catch (error) {
+            console.error("Error saving message:", error);
+        }
+
     });
 
     socket.on('disconnect', () => {
