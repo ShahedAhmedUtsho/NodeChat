@@ -382,7 +382,7 @@
 
                     console.log(messages, "this")
 
-
+                    openChatPersonID = newChat.receiver._id;
 
 
 
@@ -413,15 +413,16 @@
 
        
                 <!-- Chat Messages -->
-        <div  id="chat_Ground" class=" h-full p-4 space-y-4 overflow-y-scroll ">
+        <div  id="chat_Ground" class=" h-full p-4 space-y-4 overflow-y-scroll flex flex-col ">
 
 ${messages.length > 0 ? `
            
                 
                 
                 ${messages.map(message => {
-                        return (`
-                         <div class="flex items-start space-x-4"> 
+                        if (newChat?.receiver?.email === message?.sender?.email) {
+                            return (`
+                         <div class="flex items-start space-x-4 "> 
                          <div
                     class="border border-black/10 flex justify-center items-center bg-white/10 rounded-full w-10 h-10">
 
@@ -443,6 +444,26 @@ ${messages.length > 0 ? `
 
                     
                     `)
+                        }
+                        else {
+                            return (`
+                         <div class="flex  justify-end  space-x-4  "> 
+                        
+                        <div class="bg-[#4F45E4] max-w-[40%] p-4 text-sm rounded-lg text-gray-200">
+                            <p class="leading-5">${message.message}</p>
+                            <small class="block text-gray-400 leading-none mt-2">${message.createdAt}</small> 
+                       </div>
+                      
+                     </div>
+                 
+
+               
+
+                    
+                    `)
+
+                        }
+
                     }).join('')
                             }
                 
@@ -573,7 +594,7 @@ ${messages.length > 0 ? `
 
 </script>
 <script>
-
+    let openChatPersonID = null
 
 
     var socket = io();
@@ -595,16 +616,54 @@ ${messages.length > 0 ? `
         const chat_Ground = document.getElementById('chat_Ground');
         const newMessage = document.createElement('div');
         newMessage.classList = 'flex items-start space-x-4';
-        newMessage.innerHTML = `
-        <div
+        let ReceiveHtml
+
+        if (message?.sender === openChatPersonID) {
+
+            ReceiveHtml = `<div class="flex items-start space-x-4 w-full "> 
+                         <div
                     class="border border-black/10 flex justify-center items-center bg-white/10 rounded-full w-10 h-10">
-                    <img src="${"/uploads/avatar/" + message.avatar}" alt="User Avatar" class=" w-full h-full object-cover rounded-full">
+
+<img src="${"/uploads/avatar/" + message.avatar}" alt="User Avatar" class=" w-full h-full object-cover rounded-full">
+
+
+
+                    
                 </div>
-                <div class="bg-gray-600 p-4 text-sm rounded-lg text-gray-200">
-                    <p class="leading-5">${message.message}</p>
-                    <small class="block text-gray-400 leading-none mt-2">${Date.now()}</small>
-                </div>
-        `;
+                        <div class="bg-gray-600 max-w-[40%] p-4 text-sm rounded-lg text-gray-200">
+                            <p class="leading-5">${message.message}</p>
+                            <small class="block text-gray-400 leading-none mt-2">${Date.now()}</small> 
+                       </div>
+                      
+                     </div>
+                 
+
+               
+
+                    
+                    `
+        }
+        else {
+            ReceiveHtml = `
+                         <div class="flex  justify-end  space-x-4 w-full  "> 
+                        
+                        <div class="bg-[#4F45E4] max-w-[40%] p-4 text-sm  rounded-lg text-gray-200">
+                            <p class="leading-5">${message.message}</p>
+                            <small class="block text-gray-400 leading-none mt-2">${Date.now()}</small> 
+                       </div>
+                      
+                     </div>
+                 
+
+               
+
+                    
+                    `
+
+        }
+
+
+        newMessage.innerHTML = ReceiveHtml;
 
         chat_Ground.appendChild(newMessage);
         scrollToBottom(document.getElementById('chat_Ground'))
