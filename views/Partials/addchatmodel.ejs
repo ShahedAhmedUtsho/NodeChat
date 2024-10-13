@@ -87,15 +87,16 @@
                                 <p class="text-gray-400 text-sm">${user.email}</p>
                             </div>
                             `;
-
+                            console.log(userDev, "before appending")
                             user_search_results_box.appendChild(userDev);
                         });
 
                         // Add click event to each user to start conversation
                         document.querySelectorAll('.searched_user').forEach(user => {
                             user.addEventListener('click', (event) => {
+                                console.log("clicking")
                                 const clicked_user = event.currentTarget.id;
-                                StartConversation(clicked_user); // Trigger chat creation
+                                StartChat(clicked_user);
                             });
                         });
                     } else {
@@ -107,12 +108,24 @@
     });
 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 
 
 
 
-    async function StartConversation(id) {
+    async function StartChat(id) {
         console.log(id); // Debug: Log the clicked user id
 
         // Create a chat with the selected user
@@ -142,7 +155,8 @@
 
 
         } else {
-            // Error: Display common error message
+            // Error: Display common error message 
+            console.log(result.message || 'An error occurred. Please try again.');
             document.getElementById('common-error').classList.remove('hidden');
             document.getElementById('common-error').textContent = result.message || 'An error occurred. Please try again.';
         }
@@ -312,7 +326,7 @@
 
 
 
-                    inbox_right_box.innerHTML = `  <div class="flex-1   max-h-screen flex flex-col">
+                    inbox_right_box.innerHTML = await `  <div class="flex-1   max-h-screen flex flex-col">
         <!-- Chat Header -->
         <div class="p-4 bg-gray-700/20 flex justify-between  items-center">
             <span class="text-xl font-semibold">${newChat.receiver.name}</span>
@@ -331,7 +345,7 @@
 
        
                 <!-- Chat Messages -->
-        <div  id="chat_Ground" class=" p-4 space-y-4 overflow-y-scroll ">
+        <div  id="chat_Ground" class=" h-full p-4 space-y-4 overflow-y-scroll ">
 
 ${messages.length > 0 ? `
            
@@ -367,12 +381,17 @@ ${messages.length > 0 ? `
                 
                 
                 
-                
+                ` : `
                 
                
-                         `       : ` <div>
-                        no message found
-                        
+                        <div id="no_message_template" class="flex no_message_template items-center space-x-2 p-4 bg-gray-700/20 rounded-lg shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-more text-gray-400">
+                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                                <path d="M8 12h.01"/>
+                                <path d="M12 12h.01"/>
+                                <path d="M16 12h.01"/>
+                            </svg>
+                            <span class="text-gray-200 font-semibold">Start conversation</span>
                         </div>
 
      `
@@ -410,6 +429,9 @@ ${messages.length > 0 ? `
     </div>
 
       ` ;
+
+
+
                     const chatBox = document.getElementById('chat_Ground');
                     scrollToBottom(chatBox)
                     if (chatBox) {
@@ -478,6 +500,10 @@ ${messages.length > 0 ? `
 
 
     socket.on('receive-message', (message) => {
+        
+
+        removeNoMessageTemplate()
+
 
         console.log(message, "message received", message.avatar)
         const chat_Ground = document.getElementById('chat_Ground');
@@ -502,9 +528,17 @@ ${messages.length > 0 ? `
 
     });
 
-
+    function removeNoMessageTemplate() {
+       
+        document.querySelectorAll('.no_message_template')?.forEach(element => {
+            element.remove();
+        });
+    }
 
     function messageSendFn(newChat) {
+        console.log("sending message")
+
+        removeNoMessageTemplate()
 
 
 
