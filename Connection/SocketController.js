@@ -28,7 +28,8 @@ const SocketController = (socket, io) => {
             receiver: receiverId,
             message: message,
             avatar: avatar,
-            timeNow: moment().format('YYYY-MM-DD HH:mm:ss')
+
+            timeNow: moment().tz('Asia/Dhaka').format('YYYY-MM-DD HH:mm:ss')
 
         });
 
