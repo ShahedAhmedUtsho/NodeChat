@@ -58,8 +58,38 @@ async function sendMessage(req, res, next) {
 
 
 
+async function delete_chat(req, res, next) {
+    const { id } = req.query;
+    console.log(id, "delete this");
+
+    try {
+        const user = req.user;
+        const chat = await Chat.findOneAndDelete({
+            _id: id,
+            participants: { $in: [user._id] }
+        });
+        if (chat) {
+            await Message.deleteMany({ ChatId: id });
+
+
+
+            return res.json({ message: "Chat deleted successfully", id: id })
+
+
+
+        } else {
+            return res.status(404).json({ message: "No chat found" })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while deleting the chat.' });
+
+    }
+}
 
 
 
 
-module.exports = { get_conversation_by_id, get_messages_by_conversation_id, sendMessage }
+
+
+module.exports = { get_conversation_by_id, get_messages_by_conversation_id, sendMessage, delete_chat }
