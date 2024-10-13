@@ -27,7 +27,7 @@ const SocketController = (socket, io) => {
             receiver: receiverId,
             message: message,
             avatar: avatar,
-            
+            timeNow: new Date().toLocaleString() 
 
         });
 
