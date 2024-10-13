@@ -52,7 +52,7 @@ async function login(req, res, next) {
 
 
         } else {
-            console.log("user not found")
+            
             throw createError("user is not found. Please try again.")
 
         }

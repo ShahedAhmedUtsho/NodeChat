@@ -80,7 +80,7 @@ async function create_chats(req, res, next) {
 
 async function find_match_users(req, res, next) {
     const { search_user_text } = req.body;
-    console.log(search_user_text, "search_user_text");
+   
     try {
         const users = await People.find({
             $or:

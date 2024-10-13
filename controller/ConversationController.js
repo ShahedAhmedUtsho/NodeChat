@@ -34,7 +34,7 @@ async function get_conversation_by_id(req, res, next) {
 async function get_messages_by_conversation_id(req, res, next) {
     try {
         const id = req?.body?.id;
-        console.log(("okey" + id))
+      
         const messages = await Message.find({ ChatId: id }).populate('sender', 'name email mobile avatar');
 
         return res.json(messages)
@@ -60,7 +60,7 @@ async function sendMessage(req, res, next) {
 
 async function delete_chat(req, res, next) {
     const { id } = req.query;
-    console.log(id, "delete this");
+   
 
     try {
         const user = req.user;
