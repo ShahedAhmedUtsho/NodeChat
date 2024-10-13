@@ -2,10 +2,9 @@
   "name": "nodechat",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon app.js",
-    "prod": "NODE_ENV=production node app.js"
+    "start": "NODE_ENV=development node app.js"
   },
   "keywords": [],
   "author": "",
