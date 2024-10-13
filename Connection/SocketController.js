@@ -8,18 +8,18 @@ const Message = require("../Models/message");
 
 const SocketController = (socket, io) => {
 
-   
+
 
     // Join the room for a specific chat ID
     socket.on('join-room', (chatId) => {
-       
+
         socket.join(chatId);
     });
 
     // Listen for incoming messages
     socket.on('send-message', async (messageData) => {
         const { message, chatId, senderId, receiverId, avatar } = messageData;
-       
+
         // Save message to DB
         const newMessage = new Message({
             ChatId: chatId,
@@ -27,7 +27,8 @@ const SocketController = (socket, io) => {
             receiver: receiverId,
             message: message,
             avatar: avatar,
-            timeNow: new Date().toLocaleString() 
+
+            timeNow: Date.now()
 
         });
 
