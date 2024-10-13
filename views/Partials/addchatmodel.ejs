@@ -33,14 +33,14 @@
 </div>
 <script>
     function scrollToBottom(chatBox) {
-        console.log("scroll to bottom")
+       
 
-        console.log(chatBox?.scrollHeight, chatBox, "chatbox and its hight ")
+       
         if (chatBox) {
-            console.log('have')
+            
             chatBox.scrollTop = chatBox.scrollHeight;
         } else {
-            console.log('not have')
+            console.log('No chat box found');
         }
     }
 </script>
@@ -87,14 +87,14 @@
                                 <p class="text-gray-400 text-sm">${user.email}</p>
                             </div>
                             `;
-                            console.log(userDev, "before appending")
+                          
                             user_search_results_box.appendChild(userDev);
                         });
 
                         // Add click event to each user to start conversation
                         document.querySelectorAll('.searched_user').forEach(user => {
                             user.addEventListener('click', (event) => {
-                                console.log("clicking")
+                              
                                 const clicked_user = event.currentTarget.id;
                                 StartChat(clicked_user);
                             });
@@ -126,7 +126,7 @@
 
 
     async function StartChat(id) {
-        console.log(id); // Debug: Log the clicked user id
+       
 
         // Create a chat with the selected user
         const response = await fetch('/inbox/create_chats', {
@@ -142,7 +142,7 @@
         if (response.ok) {
 
             document.getElementById('add-chat-modal').classList.add('hidden');
-            console.log('Chat created successfully!');
+       
 
 
 
@@ -156,7 +156,7 @@
 
         } else {
             // Error: Display common error message 
-            console.log(result.message || 'An error occurred. Please try again.');
+          
             document.getElementById('common-error').classList.remove('hidden');
             document.getElementById('common-error').textContent = result.message || 'An error occurred. Please try again.';
         }
@@ -176,7 +176,7 @@
             const data = await response.json();
             if (data.length > 0) {
                 const conversation_list_div = document.getElementById('conversation_list');
-                console.log(data)
+                
 
 
                 conversation_list_div.innerHTML = ` 
@@ -233,7 +233,6 @@
     async function chatDeleteFn() {
 
         const chatId = openChatId;
-        console.log(chatId, "chat id")
         try {
             const response = await fetch(`/inbox/delete_chat?id=${chatId}`, {
                 method: 'DELETE',
@@ -244,9 +243,9 @@
 
             if (response.ok) {
                 chat_delete_Model.classList.add('hidden');
-                console.log('Chat deleted successfully!');
+                
                 const removeChat = document.getElementById(chatId);
-                console.log(removeChat)
+               
                 removeChat.remove();
                 inbox_right_box.innerHTML = ` <div class="flex flex-col items-center justify-center h-full text-gray-400">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
@@ -371,7 +370,7 @@
                     const messages = await message_response.json();
 
 
-                    console.log(messages, "this")
+                   
 
                     openChatPersonID = newChat.receiver._id;
 
@@ -563,7 +562,7 @@ ${messages.length > 0 ? `
             const chat_delete_button = document.getElementById('chat_delete_button');
 
             chat_delete_Model_open.addEventListener('click', () => {
-                console.log(openChatId, "open chat id")
+             
 
                 chat_delete_Model.classList.remove('hidden');
             });
@@ -592,7 +591,7 @@ ${messages.length > 0 ? `
 
     async function StartConversation(id) {
         openChatId = id;
-        console.log(id, "click convertaion for join room"); // Debug: Log the clicked user id 
+       
         socket.emit('join-room', id);
     }
 
@@ -603,7 +602,7 @@ ${messages.length > 0 ? `
         removeNoMessageTemplate()
 
 
-        console.log(message, "message received", message.avatar)
+   
         const chat_Ground = document.getElementById('chat_Ground');
         const newMessage = document.createElement('div');
         newMessage.classList = 'flex items-start space-x-4';
@@ -686,7 +685,7 @@ ${messages.length > 0 ? `
             receiverId: newChat.receiver._id,
 
         }
-        console.log(newMessage)
+      
 
         socket.emit('send-message', newMessage);
         message_inbox_form_input.value = '';
