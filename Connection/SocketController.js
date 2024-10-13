@@ -2,7 +2,6 @@ const { set } = require("mongoose");
 const checkLogin = require("../middlewares/common/checkLogin");
 const jwt = require('jsonwebtoken');
 const Message = require("../Models/message");
-const moment = require('moment');
 
 
 
@@ -28,8 +27,7 @@ const SocketController = (socket, io) => {
             receiver: receiverId,
             message: message,
             avatar: avatar,
-
-            timeNow: moment().tz('Asia/Dhaka').format('YYYY-MM-DD HH:mm:ss')
+            timeNow: new Date()
 
         });
 
